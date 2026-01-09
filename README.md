@@ -1,55 +1,72 @@
 # 📦 Sistem Inventaris KKP
 
-Aplikasi manajemen inventaris barang berbasis web menggunakan ASP.NET Core MVC dengan dual database (SQL Server & MongoDB).
+Aplikasi manajemen inventaris barang berbasis web menggunakan **ASP.NET Core MVC** dengan **dual database** (SQL Server & MongoDB).
 
 ![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet)
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-MVC-512BD4)
 ![SQL Server](https://img.shields.io/badge/SQL%20Server-LocalDB-CC2927?logo=microsoftsqlserver)
-![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?logo=mongodb&logoColor=white)
-![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?logo=bootstrap&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?logo=mongodb\&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?logo=bootstrap\&logoColor=white)
+
+---
+
+## 🧑‍🎓 Profil
+
+| Variable        | Isi                                 |
+| --------------- | ----------------------------------- |
+| **Nama**        | Bayu Aji Yuwono                     |
+| **NIM**         | 312310492                           |
+| **Kelas**       | TI.23.A.5                           |
+| **Mata Kuliah** | Pemrograman Visual (Desktop)        |
+| **Dosen**       | Dr. Muhamad Fatchan, S.Kom., M.Kom. |
 
 ---
 
 ## 📋 Deskripsi
 
-Sistem Inventaris KKP adalah aplikasi web untuk mengelola inventaris barang dengan fitur lengkap seperti manajemen kategori, barang, transaksi masuk/keluar, serta sistem autentikasi berbasis role (Admin & User). Aplikasi ini menggunakan dual database untuk fleksibilitas dan backup data.
+**Sistem Inventaris KKP** adalah aplikasi web untuk mengelola inventaris barang dengan fitur lengkap seperti manajemen kategori, barang, transaksi masuk/keluar, serta sistem autentikasi berbasis **role** (Admin & User). Aplikasi ini menerapkan **dual database** untuk fleksibilitas dan kebutuhan backup data.
 
-### ✨ Fitur Utama
+---
 
-- 🔐 **Authentication & Authorization** - Sistem login dengan role Admin dan User
-- 📦 **Manajemen Barang** - CRUD barang dengan kategori
-- 🏷️ **Manajemen Kategori** - Organisasi barang berdasarkan kategori
-- 📊 **Transaksi** - Pencatatan barang masuk dan keluar
-- 👥 **Manajemen User** - Admin dapat mengelola user (khusus Admin)
-- 📈 **Dashboard & Laporan** - Visualisasi data inventaris
-- 💾 **Dual Database** - SQL Server (utama) + MongoDB (backup/fleksibilitas)
-- 🔒 **Security** - Password hashing dengan BCrypt, CSRF protection
+## ✨ Fitur Utama
+
+* 🔐 **Authentication & Authorization** — Login dengan role Admin dan User
+* 📦 **Manajemen Barang** — CRUD barang terintegrasi kategori
+* 🏷️ **Manajemen Kategori** — Pengelompokan barang
+* 📊 **Transaksi** — Pencatatan barang masuk dan keluar
+* 👥 **Manajemen User** — Pengelolaan pengguna (khusus Admin)
+* 📈 **Dashboard & Laporan** — Visualisasi data inventaris
+* 💾 **Dual Database** — SQL Server (utama) + MongoDB (backup)
+* 🔒 **Security** — Password hashing (BCrypt), CSRF protection
 
 ---
 
 ## 🛠️ Teknologi
 
 ### Backend
-- **ASP.NET Core 9.0** - Framework web MVC
-- **Entity Framework Core 9.0** - ORM untuk SQL Server
-- **SQL Server Express** - Database relasional utama
-- **MongoDB 2.23.1** - Database NoSQL untuk backup
+
+* **ASP.NET Core 9.0** — Framework web MVC
+* **Entity Framework Core 9.0** — ORM untuk SQL Server
+* **SQL Server Express / LocalDB** — Database relasional utama
+* **MongoDB 2.23.1** — Database NoSQL (backup)
 
 ### Frontend
-- **Razor Pages** - Template engine
-- **Bootstrap 5** - CSS framework
-- **JavaScript** - Client-side scripting
+
+* **Razor Pages** — Template engine
+* **Bootstrap 5** — CSS framework
+* **JavaScript** — Client-side scripting
 
 ### Security & Authentication
-- **Cookie Authentication** - Session management
-- **BCrypt.Net** - Password hashing
-- **AntiForgery Token** - CSRF protection
+
+* **Cookie Authentication** — Session management
+* **BCrypt.Net** — Password hashing
+* **AntiForgery Token** — CSRF protection
 
 ---
 
 ## 📁 Struktur Project
 
-```
+```text
 InventarisKKP/
 ├── Controllers/          # MVC Controllers
 │   ├── AuthController.cs
@@ -58,33 +75,33 @@ InventarisKKP/
 │   ├── TransaksiController.cs
 │   ├── UserController.cs
 │   └── HomeController.cs
-├── Models/              # Data Models
+├── Models/               # Data Models
 │   ├── User.cs
 │   ├── Barang.cs
 │   ├── Kategori.cs
 │   ├── MongoBarang.cs
 │   └── MongoKategori.cs
-├── Views/               # Razor Views
+├── Views/                # Razor Views
 │   ├── Auth/
 │   ├── Barang/
 │   ├── Kategori/
 │   ├── Transaksi/
 │   ├── User/
 │   └── Shared/
-├── Data/                # Database Context
+├── Data/                 # Database Context
 │   ├── InventarisDbContext.cs
 │   └── DbInitializer.cs
-├── Services/            # Business Logic
+├── Services/             # Business Logic
 │   ├── MongoDbService.cs
 │   ├── MongoBarangService.cs
 │   ├── MongoKategoriService.cs
 │   ├── BarangService.cs
 │   └── ActivityLogService.cs
-├── MongoDB/             # MongoDB Documentation
-├── Scripts/             # Deployment Scripts
-├── wwwroot/             # Static Files
-├── Program.cs           # Application Entry Point
-└── appsettings.json     # Configuration
+├── MongoDB/              # MongoDB Documentation
+├── Scripts/              # Deployment Scripts
+├── wwwroot/              # Static Files
+├── Program.cs            # Application Entry Point
+└── appsettings.json      # Configuration
 ```
 
 ---
@@ -94,10 +111,11 @@ InventarisKKP/
 ### Prerequisites
 
 Pastikan sudah terinstall:
-- ✅ [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
-- ✅ [SQL Server Express](https://www.microsoft.com/sql-server/sql-server-downloads) atau LocalDB
-- ✅ [MongoDB Community Server](https://www.mongodb.com/try/download/community) (opsional)
-- ✅ Git
+
+* ✅ [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
+* ✅ SQL Server Express / LocalDB
+* ✅ MongoDB Community Server (opsional)
+* ✅ Git
 
 ### Clone Repository
 
@@ -108,7 +126,8 @@ cd inventaris-kkp
 
 ### Konfigurasi Database
 
-1. **SQL Server**: Edit `InventarisKKP/appsettings.json`
+**SQL Server** — edit `InventarisKKP/appsettings.json`
+
 ```json
 {
   "ConnectionStrings": {
@@ -117,31 +136,36 @@ cd inventaris-kkp
 }
 ```
 
-2. **MongoDB** (opsional): Pastikan MongoDB berjalan di `mongodb://127.0.0.1:27017`
+**MongoDB (Opsional)** — Pastikan berjalan di:
+
+```
+mongodb://127.0.0.1:27017
+```
 
 ### Menjalankan Aplikasi
 
-#### Opsi 1: Script Otomatis (Recommended)
+#### Opsi 1 — Script Otomatis (Disarankan)
 
-**Windows Command Prompt:**
 ```bash
 cd InventarisKKP
 run.bat
 ```
 
-**PowerShell:**
+PowerShell:
+
 ```powershell
 cd InventarisKKP
 .\run.ps1
 ```
 
-**Menu Lengkap:**
+Menu Lengkap:
+
 ```bash
 cd InventarisKKP
 quick-start.bat
 ```
 
-#### Opsi 2: Manual
+#### Opsi 2 — Manual
 
 ```bash
 cd InventarisKKP
@@ -151,193 +175,141 @@ dotnet run
 
 ### Akses Aplikasi
 
-Buka browser dan akses: **http://localhost:5000**
+Buka browser:
+
+```
+http://localhost:5000
+```
 
 #### Login Default
-| Role  | Username | Password  |
-|-------|----------|-----------|
-| Admin | `admin`  | `admin123`|
-| User  | `user`   | `user123` |
+
+| Role  | Username | Password |
+| ----- | -------- | -------- |
+| Admin | admin    | admin123 |
+| User  | user     | user123  |
 
 ---
 
-## 📖 Dokumentasi
+## 📖 Dokumentasi Teknis
 
 ### Database Schema
 
-#### SQL Server Tables
-- **Users** - Data pengguna dan autentikasi
-- **Kategoris** - Kategori barang
-- **Barangs** - Data barang
-- **TransaksiMasuks** - Transaksi barang masuk
-- **TransaksiKeluars** - Transaksi barang keluar
+**SQL Server**
 
-#### MongoDB Collections
-- **Kategoris** - Backup data kategori
-- **Barangs** - Backup data barang dengan denormalisasi
+* Users
+* Kategoris
+* Barangs
+* TransaksiMasuks
+* TransaksiKeluars
 
-### API Endpoints
+**MongoDB**
 
-| Method | Endpoint | Deskripsi | Role |
-|--------|----------|-----------|------|
-| GET | `/Auth/Login` | Halaman login | Public |
-| POST | `/Auth/Login` | Proses login | Public |
-| GET | `/Barang` | List barang | User/Admin |
-| POST | `/Barang/Create` | Tambah barang | Admin |
-| POST | `/Barang/Edit/{id}` | Edit barang | Admin |
-| POST | `/Barang/Delete/{id}` | Hapus barang | Admin |
-| GET | `/Kategori` | List kategori | User/Admin |
-| POST | `/Kategori/Create` | Tambah kategori | Admin |
-| GET | `/User` | List user | Admin |
-| POST | `/User/Create` | Tambah user | Admin |
+* Kategoris (backup)
+* Barangs (denormalisasi)
+
+### API Endpoints (Ringkas)
+
+| Method | Endpoint            | Role       |
+| ------ | ------------------- | ---------- |
+| GET    | /Auth/Login         | Public     |
+| POST   | /Auth/Login         | Public     |
+| GET    | /Barang             | User/Admin |
+| POST   | /Barang/Create      | Admin      |
+| POST   | /Barang/Edit/{id}   | Admin      |
+| POST   | /Barang/Delete/{id} | Admin      |
+| GET    | /Kategori           | User/Admin |
+| POST   | /Kategori/Create    | Admin      |
+| GET    | /User               | Admin      |
+| POST   | /User/Create        | Admin      |
 
 ---
 
 ## 🔧 Utility Scripts
 
-### run.bat / run.ps1
-Script untuk menjalankan aplikasi dengan cepat. Otomatis:
-- ✅ Kill process yang menggunakan port 5000
-- ✅ Start aplikasi
-- ✅ Tampilkan URL dan login info
-
-### quick-start.bat
-Menu interaktif dengan opsi:
-1. Run Development Server
-2. Reset Database
-3. Stop Running Server
-4. Exit
-
-### reset-database.bat
-Reset database ke kondisi awal (hapus semua data dan seed ulang)
-
-### restart-and-test.bat
-Restart aplikasi dan buka browser otomatis
+* **run.bat / run.ps1** — Menjalankan aplikasi otomatis
+* **quick-start.bat** — Menu interaktif (run, reset DB, stop server)
+* **reset-database.bat** — Reset database + seed ulang
+* **restart-and-test.bat** — Restart & auto-open browser
 
 ---
 
 ## 🐛 Troubleshooting
 
-### Error: Port 5000 Already in Use
+### Port 5000 Digunakan
 
-**Solusi 1 - Gunakan Script:**
 ```bash
-run.bat
-```
-Script akan otomatis kill process yang menggunakan port 5000.
-
-**Solusi 2 - Manual:**
-```bash
-# Cari process
 netstat -ano | findstr :5000
-
-# Kill process
 taskkill /F /PID <PID>
 ```
 
-**Solusi 3 - PowerShell:**
-```powershell
-Get-NetTCPConnection -LocalPort 5000 | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }
-```
+Atau gunakan `run.bat`.
 
-### Error: Couldn't find a project to run
+### Database Error
 
-**Penyebab**: Anda tidak berada di folder InventarisKKP
-
-**Solusi**:
 ```bash
-cd InventarisKKP
-dotnet run
-```
-
-### Error: Database Connection Failed
-
-**Solusi**: Reset database
-```bash
-cd InventarisKKP
 reset-database.bat
 ```
 
-### MongoDB Connection Error
+### MongoDB Error
 
-MongoDB bersifat opsional. Jika MongoDB tidak tersedia, aplikasi tetap berjalan normal dengan SQL Server saja.
+MongoDB bersifat **opsional**. Aplikasi tetap berjalan dengan SQL Server.
 
 ---
 
 ## 🧪 Testing
 
-### Manual Testing
-1. Login sebagai admin
-2. Tambah kategori baru
-3. Tambah barang dengan kategori tersebut
-4. Lakukan transaksi barang masuk
-5. Lakukan transaksi barang keluar
-6. Cek laporan di dashboard
+1. Login sebagai Admin
+2. Tambah kategori
+3. Tambah barang
+4. Transaksi barang masuk
+5. Transaksi barang keluar
+6. Cek dashboard
 
-### MongoDB Verification
+Verifikasi MongoDB:
+
 ```bash
-# Masuk ke MongoDB shell
 mongosh
-
-# Gunakan database
 use InventarisKKP
-
-# Lihat data kategori
-db.Kategoris.find().pretty()
-
-# Lihat data barang
-db.Barangs.find().pretty()
+db.Kategoris.find()
+db.Barangs.find()
 ```
 
 ---
 
-## 🔒 Security Features
+## 🔒 Security
 
-- **Password Hashing**: BCrypt dengan salt rounds
-- **CSRF Protection**: AntiForgeryToken pada semua form
-- **Role-Based Authorization**: Admin dan User roles
-- **Session Management**: Cookie-based dengan timeout 8 jam
-- **SQL Injection Prevention**: Entity Framework parameterized queries
-- **XSS Protection**: Razor automatic encoding
+* BCrypt password hashing
+* CSRF protection
+* Role-based authorization
+* Cookie session (timeout 8 jam)
+* SQL Injection prevention (EF Core)
+* XSS protection (Razor encoding)
 
 ---
 
-## 📝 Catatan Penting
+## 📝 Catatan
 
-### Database
-- Database SQL Server dibuat otomatis saat pertama kali run
-- Data default (admin, user, kategori, barang) di-seed otomatis
-- Password admin direset ke `admin123` setiap kali aplikasi start
-- MongoDB bersifat opsional untuk backup dan fleksibilitas
-
-### Development
-- Hot reload: Tidak aktif (restart manual untuk melihat perubahan)
-- Environment: Development
-- Logging: Console output
-- Port default: 5000
-
-### Production
-- Ubah connection string di `appsettings.Production.json`
-- Set environment variable: `ASPNETCORE_ENVIRONMENT=Production`
-- Gunakan HTTPS
-- Ubah password default
+* Database dibuat otomatis saat pertama run
+* Data default di-seed otomatis
+* Password admin di-reset ke `admin123` saat start
+* Environment: Development
+* Port default: **5000**
 
 ---
 
 ## 🤝 Contributing
 
-Kontribusi sangat diterima! Silakan:
-1. Fork repository ini
-2. Buat branch fitur (`git checkout -b feature/AmazingFeature`)
-3. Commit perubahan (`git commit -m 'Add some AmazingFeature'`)
-4. Push ke branch (`git push origin feature/AmazingFeature`)
+1. Fork repository
+2. Buat branch fitur
+3. Commit perubahan
+4. Push ke branch
 5. Buat Pull Request
 
 ---
 
 ## 📄 License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+MIT License
 
 ---
 
@@ -347,46 +319,20 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-## 📞 Support
-
-Jika mengalami masalah:
-1. Pastikan berada di folder `InventarisKKP`
-2. Gunakan `run.bat` untuk start otomatis
-3. Gunakan `reset-database.bat` jika ada masalah database
-4. Clear browser cache jika tampilan tidak update
-5. Buka issue di GitHub untuk bug report
-
----
-
-## ✅ Checklist Deployment
-
-- [ ] .NET 9.0 SDK terinstall
-- [ ] SQL Server Express/LocalDB terinstall
-- [ ] MongoDB terinstall (opsional)
-- [ ] Port 5000 tidak digunakan
-- [ ] Connection string sudah dikonfigurasi
-- [ ] Firewall mengizinkan port 5000
-- [ ] Browser modern (Chrome, Firefox, Edge)
-
----
-
-**Version**: 1.0.0  
-**Status**: ✅ Production Ready  
-**Last Updated**: January 2026
-
----
-
 ## 🎯 Roadmap
 
-- [ ] Export laporan ke Excel/PDF
-- [ ] Notifikasi stok minimum
-- [ ] Barcode scanner integration
-- [ ] Multi-warehouse support
-- [ ] REST API untuk mobile app
-- [ ] Real-time dashboard dengan SignalR
-- [ ] Audit trail lengkap
-- [ ] Email notifications
+* Export laporan (Excel/PDF)
+* Notifikasi stok minimum
+* Barcode scanner
+* Multi-warehouse
+* REST API (mobile)
+* Real-time dashboard (SignalR)
+* Audit trail
+* Email notification
 
 ---
 
-Made with ❤️ by Tim KKP
+**Version**: 1.0.0
+**Status**: ✅ Production Ready
+**Last Updated**: January 2026
+
