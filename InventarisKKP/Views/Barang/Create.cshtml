@@ -1,0 +1,172 @@
+@model InventarisKKP.Models.Barang
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Tambah Barang";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <h2><i class="fas fa-plus"></i> Tambah Barang</h2>
+        
+        <!-- Debug Info (hapus di production) -->
+        @if (ViewBag.JumlahKategori != null)
+        {
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> 
+                Ditemukan @ViewBag.JumlahKategori kategori dalam database.
+            </div>
+        }
+        
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    @Html.AntiForgeryToken()
+                    
+                    @* Form token untuk prevent resubmission *@
+                    <input type="hidden" name="formToken" value="@ViewBag.FormToken" />
+                    
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    
+                    <div class="mb-3">
+                        <label for="NamaBarang" class="form-label">Nama Barang</label>
+                        <input type="text" id="NamaBarang" name="NamaBarang" class="form-control" placeholder="Masukkan nama barang" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="KategoriId" class="form-label">Kategori</label>
+                        @Html.DropDownListFor(m => m.KategoriId, ViewBag.KategoriId as SelectList, "-- Pilih Kategori --", new { @class = "form-select", id = "selectKategori" })
+                        <span asp-validation-for="KategoriId" class="text-danger"></span>
+                        
+                        <!-- Debug: Tampilkan jumlah opsi dalam dropdown -->
+                        <div class="form-text">
+                            @if (ViewBag.KategoriId != null)
+                            {
+                                var selectList = ViewBag.KategoriId as Microsoft.AspNetCore.Mvc.Rendering.SelectList;
+                                <small class="text-muted">
+                                    Tersedia @(selectList?.Count() ?? 0) kategori dalam dropdown.
+                                </small>
+                                
+                                @if (selectList?.Count() == 0)
+                                {
+                                    <div class="alert alert-warning mt-2">
+                                        <i class="fas fa-exclamation-triangle"></i> 
+                                        Tidak ada kategori tersedia. 
+                                        <a href="@Url.Action("SeedData")" class="btn btn-sm btn-warning ms-2">
+                                            <i class="fas fa-database"></i> Seed Data Sekarang
+                                        </a>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="alert alert-danger mt-2">
+                                    <i class="fas fa-exclamation-circle"></i> 
+                                    ViewBag.KategoriId is null!
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="Stok" class="form-label">Stok Awal</label>
+                        <input type="number" id="Stok" name="Stok" class="form-control" min="0" placeholder="Masukkan stok awal" value="0" required>
+                        <div class="form-text">Stok awal barang (bisa diubah melalui transaksi barang masuk)</div>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Simpan
+                        </button>
+                        <a href="@Url.Action("Index")" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Kembali
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h6><i class="fas fa-info-circle"></i> Informasi</h6>
+            </div>
+            <div class="card-body">
+                <p class="small mb-2">
+                    <strong>Kategori:</strong><br>
+                    Pilih kategori yang sesuai untuk barang ini.
+                </p>
+                <p class="small mb-2">
+                    <strong>Stok Awal:</strong><br>
+                    Masukkan stok awal barang. Stok dapat diubah melalui transaksi barang masuk/keluar.
+                </p>
+                <p class="small mb-0">
+                    <a href="@Url.Action("Index", "Kategori")" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-plus"></i> Kelola Kategori
+                    </a>
+                    <a href="@Url.Action("SeedData")" class="btn btn-sm btn-outline-success ms-2">
+                        <i class="fas fa-database"></i> Seed Data
+                    </a>
+                    <a href="@Url.Action("TestDb")" class="btn btn-sm btn-outline-info ms-2">
+                        <i class="fas fa-plug"></i> Test DB
+                    </a>
+                    <a href="@Url.Action("ClearCache")" class="btn btn-sm btn-outline-warning ms-2">
+                        <i class="fas fa-broom"></i> Clear Cache
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            // Prevent form resubmission on page refresh
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+            
+            // Debug: Log dropdown options ke console
+            console.log('=== DROPDOWN DEBUG INFO ===');
+            console.log('Total options in dropdown:', $('#selectKategori option').length);
+            
+            $('#selectKategori option').each(function(index) {
+                console.log(`Option ${index}: Value="${$(this).val()}", Text="${$(this).text()}"`);
+            });
+            
+            // Peringatan jika dropdown kosong (hanya di console, bukan alert)
+            if ($('#selectKategori option').length <= 1) {
+                console.warn('PERINGATAN: Dropdown kategori kosong!');
+                
+                // Tampilkan pesan di halaman
+                if ($('#selectKategori option').length === 1) {
+                    $('#selectKategori').after('<div class="alert alert-warning mt-2" id="emptyDropdownAlert"><i class="fas fa-exclamation-triangle"></i> Dropdown kosong! Klik tombol "Seed Data" untuk menambah kategori.</div>');
+                }
+            } else {
+                console.log('✓ Dropdown kategori berhasil dimuat dengan ' + ($('#selectKategori option').length - 1) + ' kategori.');
+            }
+            
+            // Debug ViewBag info
+            console.log('ViewBag info dari server:');
+            @if (ViewBag.JumlahKategori != null)
+            {
+                <text>console.log('JumlahKategori dari ViewBag:', @ViewBag.JumlahKategori);</text>
+            }
+            else
+            {
+                <text>console.log('JumlahKategori dari ViewBag: null');</text>
+            }
+            
+            // Prevent back button cache issues
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted) {
+                    window.location.reload();
+                }
+            });
+        });
+    </script>
+}

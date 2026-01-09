@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = ViewBag.ErrorTitle ?? "Error";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        @if (ViewBag.StatusCode == 404)
+                        {
+                            <i class="fas fa-search fa-5x text-warning"></i>
+                        }
+                        else if (ViewBag.StatusCode == 500)
+                        {
+                            <i class="fas fa-exclamation-triangle fa-5x text-danger"></i>
+                        }
+                        else if (ViewBag.StatusCode == 400)
+                        {
+                            <i class="fas fa-exclamation-circle fa-5x text-warning"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-question-circle fa-5x text-muted"></i>
+                        }
+                    </div>
+                    
+                    <h1 class="display-4">@(ViewBag.StatusCode ?? "Error")</h1>
+                    <h4 class="mb-3">@ViewBag.ErrorTitle</h4>
+                    <p class="lead">@ViewBag.ErrorMessage</p>
+                    
+                    @if (ViewBag.StatusCode == 400)
+                    {
+                        <div class="alert alert-info mt-4">
+                            <h6><i class="fas fa-info-circle"></i> Kemungkinan Penyebab:</h6>
+                            <ul class="text-start">
+                                <li>Form tidak diisi dengan benar</li>
+                                <li>Data yang dikirim tidak valid</li>
+                                <li>Masalah dengan validasi form</li>
+                                <li>Session expired, silakan login ulang</li>
+                            </ul>
+                        </div>
+                    }
+                    
+                    <div class="mt-4">
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
+                            <i class="fas fa-home"></i> Kembali ke Dashboard
+                        </a>
+                        <button onclick="history.back()" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Kembali
+                        </button>
+                        <a href="@Url.Action("Login", "Auth")" class="btn btn-outline-primary">
+                            <i class="fas fa-sign-in-alt"></i> Login Ulang
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

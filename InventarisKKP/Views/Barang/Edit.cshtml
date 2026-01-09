@@ -1,0 +1,63 @@
+@model InventarisKKP.Models.Barang
+
+@{
+    ViewData["Title"] = "Edit Barang";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <h2><i class="fas fa-edit"></i> Edit Barang</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                <form method="post" action="/Barang/Edit/@Model.BarangId">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    
+                    <input type="hidden" name="BarangId" value="@Model.BarangId" />
+                    
+                    <div class="mb-3">
+                        <label for="NamaBarang" class="form-label">Nama Barang</label>
+                        <input type="text" class="form-control" id="NamaBarang" name="NamaBarang" value="@Model.NamaBarang" required>
+                        <span asp-validation-for="NamaBarang" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="KategoriId" class="form-label">Kategori</label>
+                        <select class="form-select" id="KategoriId" name="KategoriId" required>
+                            <option value="">-- Pilih Kategori --</option>
+                            @if (ViewBag.KategoriId != null)
+                            {
+                                @foreach (var item in (SelectList)ViewBag.KategoriId)
+                                {
+                                    <option value="@item.Value" @(item.Value == Model.KategoriId.ToString() ? "selected" : "")>@item.Text</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="KategoriId" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="Stok" class="form-label">Stok</label>
+                        <input type="number" class="form-control" id="Stok" name="Stok" value="@Model.Stok" min="0" readonly>
+                        <span asp-validation-for="Stok" class="text-danger"></span>
+                        <div class="form-text">Stok tidak dapat diubah langsung. Gunakan transaksi barang masuk/keluar untuk mengubah stok.</div>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Simpan Perubahan
+                        </button>
+                        <a href="/Barang/Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Kembali
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

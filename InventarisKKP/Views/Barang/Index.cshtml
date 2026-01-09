@@ -1,0 +1,92 @@
+@model IEnumerable<InventarisKKP.Models.Barang>
+
+@{
+    ViewData["Title"] = "Daftar Barang";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-box"></i> Daftar Barang</h2>
+    <a href="@Url.Action("Create")" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Tambah Barang
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Barang</th>
+                        <th>Kategori</th>
+                        <th>Stok</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model?.Any() == true)
+                    {
+                        int no = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@no</td>
+                                <td>@(item.NamaBarang ?? "N/A")</td>
+                                <td>@(item.Kategori?.NamaKategori ?? "Tidak ada kategori")</td>
+                                <td class="text-center">
+                                    @{
+                                        var badgeClass = item.Stok > 10 ? "bg-success" : item.Stok > 0 ? "bg-warning" : "bg-danger";
+                                    }
+                                    <span class="badge @badgeClass">
+                                        @item.Stok unit
+                                    </span>
+                                </td>
+                                <td>
+                                    @if (item.Stok > 10)
+                                    {
+                                        <span class="badge bg-success">Aman</span>
+                                    }
+                                    else if (item.Stok > 0)
+                                    {
+                                        <span class="badge bg-warning">Menipis</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Habis</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="@Url.Action("Edit", new { id = item.BarangId })" 
+                                           class="btn btn-sm btn-warning">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <form method="post" action="@Url.Action("Delete", new { id = item.BarangId })" 
+                                              style="display: inline;" 
+                                              onsubmit="return confirm('Yakin ingin menghapus barang ini?')">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash"></i> Hapus
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            no++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">
+                                <i class="fas fa-inbox"></i> Belum ada data barang
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

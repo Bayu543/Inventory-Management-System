@@ -1,0 +1,223 @@
+@model InventarisKKP.Models.BarangKeluar
+
+@{
+    ViewData["Title"] = "Input Barang Keluar";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <h2><i class="fas fa-arrow-up text-warning"></i> Input Barang Keluar</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="CreateBarangKeluar" method="post" id="formBarangKeluar">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    
+                    <div class="mb-3">
+                        <label for="BarangId" class="form-label">Pilih Barang</label>
+                        <select name="BarangId" id="selectBarang" class="form-select" required>
+                            <option value="">-- Pilih Barang --</option>
+                            @if (ViewBag.BarangId != null)
+                            {
+                                var selectList = ViewBag.BarangId as SelectList;
+                                if (selectList != null)
+                                {
+                                    foreach (var item in selectList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="BarangId" class="text-danger"></span>
+                    </div>
+                    
+                    <!-- Info Stok -->
+                    <div class="mb-3" id="infoStok" style="display: none;">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            <strong>Stok Tersedia: </strong>
+                            <span id="stokTersedia" class="badge bg-primary fs-6">0</span> unit
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="Jumlah" class="form-label">Jumlah Keluar</label>
+                        <input name="Jumlah" id="inputJumlah" type="number" class="form-control" min="1" value="1" placeholder="Masukkan jumlah" required>
+                        <span asp-validation-for="Jumlah" class="text-danger"></span>
+                        <div id="warningStok" class="text-danger mt-1" style="display: none;">
+                            <i class="fas fa-exclamation-triangle"></i> Jumlah melebihi stok yang tersedia!
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="TanggalKeluar" class="form-label">Tanggal Keluar</label>
+                        <input name="TanggalKeluar" id="TanggalKeluar" type="datetime-local" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required>
+                        <span asp-validation-for="TanggalKeluar" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-warning" id="btnSubmit">
+                            <i class="fas fa-save"></i> Simpan Barang Keluar
+                        </button>
+                        <a href="@Url.Action("BarangKeluar")" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Kembali
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h6><i class="fas fa-info-circle"></i> Informasi</h6>
+            </div>
+            <div class="card-body">
+                <p class="small mb-2">
+                    <strong>Barang Keluar:</strong><br>
+                    Transaksi ini akan mengurangi stok barang secara otomatis.
+                </p>
+                <p class="small mb-2">
+                    <strong>Validasi Stok:</strong><br>
+                    Sistem akan memvalidasi bahwa jumlah keluar tidak melebihi stok yang tersedia.
+                </p>
+                <p class="small mb-0">
+                    <strong>Catatan:</strong><br>
+                    Pastikan data yang diinput sudah benar sebelum menyimpan.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Card untuk menampilkan barang dengan stok rendah -->
+        <div class="card bg-warning bg-opacity-10 mt-3">
+            <div class="card-header">
+                <h6><i class="fas fa-exclamation-triangle text-warning"></i> Peringatan Stok</h6>
+            </div>
+            <div class="card-body">
+                <p class="small mb-0">
+                    Pastikan untuk memeriksa stok sebelum melakukan transaksi keluar.
+                    Barang dengan stok 0 tidak akan muncul dalam pilihan.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            let currentStok = 0;
+            
+            // Event handler untuk perubahan pilihan barang
+            $('#selectBarang').change(function() {
+                const barangId = $(this).val();
+                
+                if (barangId) {
+                    // Reset form
+                    $('#inputJumlah').val('');
+                    $('#warningStok').hide();
+                    $('#btnSubmit').prop('disabled', false);
+                    
+                    // Ambil data stok via AJAX
+                    $.ajax({
+                        url: '@Url.Action("GetStokBarang", "Transaksi")',
+                        type: 'GET',
+                        data: { barangId: barangId },
+                        success: function(response) {
+                            if (response.success) {
+                                currentStok = response.stok;
+                                $('#stokTersedia').text(currentStok);
+                                $('#infoStok').show();
+                                
+                                // Set max value untuk input jumlah
+                                $('#inputJumlah').attr('max', currentStok);
+                                
+                                // Update badge color berdasarkan stok
+                                const badge = $('#stokTersedia');
+                                badge.removeClass('bg-primary bg-warning bg-danger');
+                                
+                                if (currentStok > 10) {
+                                    badge.addClass('bg-success');
+                                } else if (currentStok > 0) {
+                                    badge.addClass('bg-warning');
+                                } else {
+                                    badge.addClass('bg-danger');
+                                }
+                            } else {
+                                alert('Error: ' + response.message);
+                            }
+                        },
+                        error: function() {
+                            alert('Terjadi kesalahan saat mengambil data stok');
+                        }
+                    });
+                } else {
+                    $('#infoStok').hide();
+                    $('#inputJumlah').removeAttr('max');
+                    currentStok = 0;
+                }
+            });
+            
+            // Event handler untuk validasi jumlah input
+            $('#inputJumlah').on('input', function() {
+                const jumlah = parseInt($(this).val()) || 0;
+                
+                if (jumlah > currentStok) {
+                    $('#warningStok').show();
+                    $('#btnSubmit').prop('disabled', true);
+                    $(this).addClass('is-invalid');
+                } else {
+                    $('#warningStok').hide();
+                    $('#btnSubmit').prop('disabled', false);
+                    $(this).removeClass('is-invalid');
+                }
+            });
+            
+            // Validasi sebelum submit
+            $('#formBarangKeluar').submit(function(e) {
+                const jumlah = parseInt($('#inputJumlah').val()) || 0;
+                const barangId = $('#selectBarang').val();
+                
+                if (!barangId) {
+                    e.preventDefault();
+                    alert('Silakan pilih barang terlebih dahulu');
+                    return false;
+                }
+                
+                if (jumlah <= 0) {
+                    e.preventDefault();
+                    alert('Jumlah harus lebih dari 0');
+                    return false;
+                }
+                
+                if (jumlah > currentStok) {
+                    e.preventDefault();
+                    alert('Jumlah melebihi stok yang tersedia (' + currentStok + ' unit)');
+                    return false;
+                }
+                
+                // Konfirmasi sebelum submit
+                const namaBarang = $('#selectBarang option:selected').text();
+                const konfirmasi = confirm(`Konfirmasi transaksi barang keluar:\n\nBarang: ${namaBarang}\nJumlah: ${jumlah} unit\nStok setelah transaksi: ${currentStok - jumlah} unit\n\nLanjutkan?`);
+                
+                if (!konfirmasi) {
+                    e.preventDefault();
+                    return false;
+                }
+                
+                // Disable button untuk mencegah double submit
+                $('#btnSubmit').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Menyimpan...');
+                
+                // Re-enable jika ada error (timeout 5 detik)
+                setTimeout(function() {
+                    $('#btnSubmit').prop('disabled', false).html('<i class="fas fa-save"></i> Simpan Barang Keluar');
+                }, 5000);
+            });
+        });
+    </script>
+}

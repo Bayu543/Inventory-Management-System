@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Inventory Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                <i class="fas fa-boxes"></i> Inventory Management System
+            </a>
+            
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Home")">
+                                <i class="fas fa-home"></i> Dashboard
+                            </a>
+                        </li>
+                        
+                        @* Menu untuk semua user yang login *@
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Barang")">
+                                <i class="fas fa-box"></i> Data Barang
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-exchange-alt"></i> Transaksi
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="@Url.Action("BarangMasuk", "Transaksi")">Barang Masuk</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("BarangKeluar", "Transaksi")">Barang Keluar</a></li>
+                            </ul>
+                        </li>
+                        
+                        @* Menu khusus Admin *@
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-cog"></i> Admin Panel
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="@Url.Action("Index", "User")">
+                                        <i class="fas fa-users"></i> Manajemen User
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Index", "Kategori")">
+                                        <i class="fas fa-tags"></i> Manajemen Kategori
+                                    </a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Laporan", "Home")">
+                                        <i class="fas fa-chart-bar"></i> Laporan
+                                    </a></li>
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user"></i> @User.Identity?.Name
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <span class="badge bg-danger ms-1">Admin</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-info ms-1">User</span>
+                                }
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="@Url.Action("Logout", "Auth")">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            }
+        </div>
+    </nav>
+
+    <main class="container mt-4">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle"></i> @TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        @if (TempData["Warning"] != null)
+        {
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle"></i> @TempData["Warning"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle"></i> @TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        @RenderBody()
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,42 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": ["nama_barang", "kategori", "jumlah_barang", "tanggal_masuk"],
+    "properties": {
+      "_id": {
+        "bsonType": "objectId",
+        "description": "ID unik otomatis dari MongoDB"
+      },
+      "nama_barang": {
+        "bsonType": "string",
+        "minLength": 1,
+        "maxLength": 200,
+        "description": "Nama barang - wajib diisi, maksimal 200 karakter"
+      },
+      "kategori": {
+        "bsonType": "string",
+        "minLength": 1,
+        "maxLength": 100,
+        "description": "Kategori barang (contoh: Elektronik, Furniture, ATK) - wajib diisi"
+      },
+      "jumlah_barang": {
+        "bsonType": "int",
+        "minimum": 0,
+        "description": "Jumlah stok barang - wajib diisi, minimal 0"
+      },
+      "deskripsi": {
+        "bsonType": "string",
+        "maxLength": 1000,
+        "description": "Deskripsi detail barang - opsional, maksimal 1000 karakter"
+      },
+      "tanggal_masuk": {
+        "bsonType": "date",
+        "description": "Tanggal barang pertama kali masuk ke inventaris - wajib diisi"
+      },
+      "tanggal_update": {
+        "bsonType": "date",
+        "description": "Tanggal terakhir data barang diupdate - otomatis diupdate"
+      }
+    }
+  }
+}

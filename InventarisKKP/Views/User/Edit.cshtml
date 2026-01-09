@@ -1,0 +1,94 @@
+@model InventarisKKP.Models.User
+
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>Edit User</h2>
+            <hr />
+
+            <form method="post" action="/User/Edit/@Model.UserId">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="UserId" value="@Model.UserId" />
+                
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="mb-3">
+                    <label for="Username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="Username" name="Username" value="@Model.Username" required>
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="NamaLengkap" class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-control" id="NamaLengkap" name="NamaLengkap" value="@Model.NamaLengkap" required>
+                    <span asp-validation-for="NamaLengkap" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="Role" class="form-label">Role</label>
+                    <select class="form-select" id="Role" name="Role" required>
+                        <option value="Admin" @(Model.Role == "Admin" ? "selected" : "")>Admin</option>
+                        <option value="User" @(Model.Role == "User" ? "selected" : "")>User</option>
+                    </select>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="IsActive" name="IsActive" value="true" @(Model.IsActive ? "checked" : "")>
+                        <input type="hidden" name="IsActive" value="false">
+                        <label class="form-check-label" for="IsActive">
+                            Aktif
+                        </label>
+                    </div>
+                </div>
+
+                <hr />
+                <h5>Ubah Password (Opsional)</h5>
+                <p class="text-muted">Kosongkan jika tidak ingin mengubah password</p>
+
+                <div class="mb-3">
+                    <label for="NewPassword" class="form-label">Password Baru</label>
+                    <input type="password" class="form-control" id="NewPassword" name="NewPassword" minlength="6">
+                    <small class="form-text text-muted">Minimal 6 karakter</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="PasswordConfirm" class="form-label">Konfirmasi Password</label>
+                    <input type="password" class="form-control" id="PasswordConfirm" name="PasswordConfirm">
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Perubahan
+                    </button>
+                    <a href="/User/Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Kembali
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Validasi password match
+        document.querySelector('form').addEventListener('submit', function(e) {
+            var newPassword = document.getElementById('NewPassword').value;
+            var confirmPassword = document.getElementById('PasswordConfirm').value;
+            
+            if (newPassword && newPassword !== confirmPassword) {
+                e.preventDefault();
+                alert('Password dan konfirmasi password tidak sama!');
+                return false;
+            }
+        });
+    </script>
+}

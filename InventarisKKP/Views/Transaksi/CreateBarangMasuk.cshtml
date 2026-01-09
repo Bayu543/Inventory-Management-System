@@ -1,0 +1,120 @@
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model InventarisKKP.Models.BarangMasuk
+
+@{
+    ViewData["Title"] = "Input Barang Masuk";
+    var barangs = ViewBag.Barangs as List<InventarisKKP.Models.Barang>;
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <h2><i class="fas fa-arrow-down text-success"></i> Input Barang Masuk</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="CreateBarangMasuk" method="post" id="formBarangMasuk">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    
+                    <div class="mb-3">
+                        <label for="BarangId" class="form-label">Pilih Barang</label>
+                        <select name="BarangId" id="BarangId" class="form-select" required>
+                            <option value="">-- Pilih Barang --</option>
+                            @if (barangs != null && barangs.Any())
+                            {
+                                foreach (var barang in barangs)
+                                {
+                                    <option value="@barang.BarangId">
+                                        @barang.NamaBarang - @(barang.Kategori?.NamaKategori ?? "Tanpa Kategori") (Stok: @barang.Stok)
+                                    </option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="" disabled>Tidak ada data barang</option>
+                            }
+                        </select>
+                        <span asp-validation-for="BarangId" class="text-danger"></span>
+                        @if (barangs != null)
+                        {
+                            <small class="form-text text-muted">Tersedia @barangs.Count barang</small>
+                        }
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="Jumlah" class="form-label">Jumlah Masuk</label>
+                        <input name="Jumlah" id="Jumlah" type="number" class="form-control" min="1" value="1" placeholder="Masukkan jumlah" required>
+                        <span asp-validation-for="Jumlah" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="TanggalMasuk" class="form-label">Tanggal Masuk</label>
+                        <input name="TanggalMasuk" id="TanggalMasuk" type="datetime-local" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required>
+                        <span asp-validation-for="TanggalMasuk" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success" id="btnSubmit">
+                            <i class="fas fa-save"></i> Simpan Barang Masuk
+                        </button>
+                        <a href="@Url.Action("BarangMasuk")" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Kembali
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h6><i class="fas fa-info-circle"></i> Informasi</h6>
+            </div>
+            <div class="card-body">
+                <p class="small mb-2">
+                    <strong>Barang Masuk:</strong><br>
+                    Transaksi ini akan menambah stok barang secara otomatis.
+                </p>
+                <p class="small mb-0">
+                    <strong>Catatan:</strong><br>
+                    Pastikan data yang diinput sudah benar sebelum menyimpan.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            // Validasi dan proteksi double submit
+            $('#formBarangMasuk').submit(function(e) {
+                const barangId = $('#BarangId').val();
+                const jumlah = parseInt($('#Jumlah').val()) || 0;
+                
+                if (!barangId) {
+                    e.preventDefault();
+                    alert('Silakan pilih barang terlebih dahulu');
+                    return false;
+                }
+                
+                if (jumlah <= 0) {
+                    e.preventDefault();
+                    alert('Jumlah harus lebih dari 0');
+                    return false;
+                }
+                
+                // Disable button untuk mencegah double submit
+                $('#btnSubmit').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Menyimpan...');
+                
+                // Re-enable jika ada error (timeout 5 detik)
+                setTimeout(function() {
+                    $('#btnSubmit').prop('disabled', false).html('<i class="fas fa-save"></i> Simpan Barang Masuk');
+                }, 5000);
+            });
+        });
+    </script>
+}

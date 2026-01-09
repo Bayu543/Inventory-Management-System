@@ -1,0 +1,61 @@
+========================================
+   CARA MENJALANKAN APLIKASI
+========================================
+
+CARA TERMUDAH:
+==============
+
+1. Buka Command Prompt atau PowerShell
+2. Masuk ke folder InventarisKKP:
+   
+   cd InventarisKKP
+
+3. Jalankan script:
+   
+   run.bat         (untuk CMD)
+   .\run.ps1       (untuk PowerShell)
+
+4. Buka browser: http://localhost:5000
+
+5. Login:
+   - Admin: admin / admin123
+   - User: user / user123
+
+
+CARA ALTERNATIF:
+================
+
+Menu Lengkap:
+   quick-start.bat
+
+Manual:
+   dotnet run
+
+
+TROUBLESHOOTING:
+================
+
+Jika error "Port 5000 already in use":
+   - Script run.bat akan otomatis fix ini
+   - Atau manual: taskkill /F /PID <PID>
+
+Jika error "Couldn't find project":
+   - Pastikan Anda di folder InventarisKKP
+   - cd InventarisKKP
+
+Jika database error:
+   - Jalankan: reset-database.bat
+
+
+FILE PENTING:
+=============
+
+run.bat              - Quick start (recommended)
+run.ps1              - Quick start PowerShell
+quick-start.bat      - Menu lengkap
+reset-database.bat   - Reset database
+README.md            - Dokumentasi lengkap
+
+
+STATUS: ✅ SIAP DIGUNAKAN
+========================================

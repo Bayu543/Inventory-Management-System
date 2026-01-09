@@ -1,0 +1,82 @@
+[
+  {
+    "nama_barang": "Laptop Dell Latitude 5420",
+    "kategori": "Elektronik",
+    "jumlah_barang": 15,
+    "deskripsi": "Laptop untuk keperluan kantor dengan spesifikasi Intel Core i5, RAM 8GB, SSD 256GB",
+    "tanggal_masuk": {"$date": "2024-01-15T08:00:00.000Z"},
+    "tanggal_update": {"$date": "2024-01-15T08:00:00.000Z"}
+  },
+  {
+    "nama_barang": "Meja Kerja Kayu Jati",
+    "kategori": "Furniture",
+    "jumlah_barang": 25,
+    "deskripsi": "Meja kerja ukuran 120x60 cm dengan laci 3 tingkat",
+    "tanggal_masuk": {"$date": "2024-02-10T09:30:00.000Z"},
+    "tanggal_update": {"$date": "2024-02-10T09:30:00.000Z"}
+  },
+  {
+    "nama_barang": "Printer HP LaserJet Pro",
+    "kategori": "Elektronik",
+    "jumlah_barang": 8,
+    "deskripsi": "Printer laser monochrome untuk kebutuhan cetak dokumen kantor",
+    "tanggal_masuk": {"$date": "2024-03-05T10:15:00.000Z"},
+    "tanggal_update": {"$date": "2024-03-20T14:30:00.000Z"}
+  },
+  {
+    "nama_barang": "Kursi Kantor Ergonomis",
+    "kategori": "Furniture",
+    "jumlah_barang": 30,
+    "deskripsi": "Kursi kantor dengan sandaran punggung adjustable dan roda",
+    "tanggal_masuk": {"$date": "2024-02-20T11:00:00.000Z"},
+    "tanggal_update": {"$date": "2024-02-20T11:00:00.000Z"}
+  },
+  {
+    "nama_barang": "Pulpen Pilot G2",
+    "kategori": "ATK",
+    "jumlah_barang": 500,
+    "deskripsi": "Pulpen gel warna hitam 0.7mm",
+    "tanggal_masuk": {"$date": "2024-01-08T07:45:00.000Z"},
+    "tanggal_update": {"$date": "2024-03-15T16:20:00.000Z"}
+  },
+  {
+    "nama_barang": "Kertas A4 80gsm",
+    "kategori": "ATK",
+    "jumlah_barang": 200,
+    "deskripsi": "Kertas HVS A4 80gsm per rim (500 lembar)",
+    "tanggal_masuk": {"$date": "2024-01-10T08:30:00.000Z"},
+    "tanggal_update": {"$date": "2024-01-10T08:30:00.000Z"}
+  },
+  {
+    "nama_barang": "Monitor LED 24 inch",
+    "kategori": "Elektronik",
+    "jumlah_barang": 20,
+    "deskripsi": "Monitor LED 24 inch Full HD 1920x1080 dengan port HDMI dan VGA",
+    "tanggal_masuk": {"$date": "2024-02-01T09:00:00.000Z"},
+    "tanggal_update": {"$date": "2024-02-01T09:00:00.000Z"}
+  },
+  {
+    "nama_barang": "Lemari Arsip Besi",
+    "kategori": "Furniture",
+    "jumlah_barang": 10,
+    "deskripsi": "Lemari arsip 4 laci dengan kunci untuk penyimpanan dokumen",
+    "tanggal_masuk": {"$date": "2024-03-01T10:00:00.000Z"},
+    "tanggal_update": {"$date": "2024-03-01T10:00:00.000Z"}
+  },
+  {
+    "nama_barang": "Mouse Wireless Logitech",
+    "kategori": "Elektronik",
+    "jumlah_barang": 35,
+    "deskripsi": "Mouse wireless dengan sensor optical dan baterai AA",
+    "tanggal_masuk": {"$date": "2024-01-20T08:15:00.000Z"},
+    "tanggal_update": {"$date": "2024-03-10T13:45:00.000Z"}
+  },
+  {
+    "nama_barang": "Stapler Besar",
+    "kategori": "ATK",
+    "jumlah_barang": 45,
+    "deskripsi": "Stapler besar kapasitas 50 lembar dengan isi staples No.23",
+    "tanggal_masuk": {"$date": "2024-01-12T09:20:00.000Z"},
+    "tanggal_update": {"$date": "2024-01-12T09:20:00.000Z"}
+  }
+]

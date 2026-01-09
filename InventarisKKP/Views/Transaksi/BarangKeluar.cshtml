@@ -1,0 +1,250 @@
+@model IEnumerable<InventarisKKP.Models.BarangKeluar>
+
+@{
+    ViewData["Title"] = "Daftar Barang Keluar";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-arrow-up text-warning"></i> Daftar Barang Keluar</h2>
+    <a href="@Url.Action("CreateBarangKeluar")" class="btn btn-warning">
+        <i class="fas fa-plus"></i> Input Barang Keluar
+    </a>
+</div>
+
+<!-- Filter dan Search -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <label class="form-label">Cari Barang:</label>
+                <input type="text" id="searchBarang" class="form-control" placeholder="Ketik nama barang...">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Filter Tanggal:</label>
+                <input type="date" id="filterTanggal" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Filter Bulan:</label>
+                <select id="filterBulan" class="form-select">
+                    <option value="">Semua Bulan</option>
+                    @for (int i = 1; i <= 12; i++)
+                    {
+                        var selected = i == DateTime.Now.Month ? "selected" : "";
+                        <option value="@i" @selected>@DateTime.Now.AddMonths(i - DateTime.Now.Month).ToString("MMMM")</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">&nbsp;</label>
+                <button type="button" class="btn btn-secondary d-block w-100" onclick="resetFilter()">
+                    <i class="fas fa-refresh"></i> Reset
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover" id="tableBarangKeluar">
+                <thead class="table-dark">
+                    <tr>
+                        <th>No</th>
+                        <th>Tanggal Keluar</th>
+                        <th>Nama Barang</th>
+                        <th>Kategori</th>
+                        <th>Jumlah Keluar</th>
+                        <th>Stok Setelah</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model?.Any() == true)
+                    {
+                        int no = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@no</td>
+                                <td data-tanggal="@item.TanggalKeluar.ToString("yyyy-MM-dd")" data-bulan="@item.TanggalKeluar.Month">
+                                    @item.TanggalKeluar.ToString("dd/MM/yyyy HH:mm")
+                                </td>
+                                <td data-barang="@item.Barang?.NamaBarang?.ToLower()">
+                                    @item.Barang?.NamaBarang
+                                </td>
+                                <td>@item.Barang?.Kategori?.NamaKategori</td>
+                                <td class="text-center">
+                                    <span class="badge bg-warning text-dark">
+                                        @item.Jumlah unit
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    @{
+                                        var stokSekarang = item.Barang?.Stok ?? 0;
+                                        var badgeClass = stokSekarang > 10 ? "bg-success" : stokSekarang > 0 ? "bg-warning" : "bg-danger";
+                                    }
+                                    <span class="badge @badgeClass">
+                                        @stokSekarang unit
+                                    </span>
+                                </td>
+                                <td>
+                                    @{
+                                        var statusClass = "success";
+                                        var statusText = "Berhasil";
+                                        var statusIcon = "check-circle";
+                                        
+                                        if (stokSekarang == 0)
+                                        {
+                                            statusClass = "danger";
+                                            statusText = "Stok Habis";
+                                            statusIcon = "exclamation-triangle";
+                                        }
+                                        else if (stokSekarang <= 5)
+                                        {
+                                            statusClass = "warning";
+                                            statusText = "Stok Menipis";
+                                            statusIcon = "exclamation-circle";
+                                        }
+                                    }
+                                    <span class="badge bg-@statusClass">
+                                        <i class="fas fa-@statusIcon"></i> @statusText
+                                    </span>
+                                </td>
+                            </tr>
+                            no++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-muted">
+                                <i class="fas fa-inbox"></i> Belum ada transaksi barang keluar
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Summary Card -->
+@if (Model?.Any() == true)
+{
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card bg-warning bg-opacity-10">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Transaksi</h5>
+                    <h3 class="text-warning">@Model.Count()</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info bg-opacity-10">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Unit Keluar</h5>
+                    <h3 class="text-info">@Model.Sum(x => x.Jumlah)</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success bg-opacity-10">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Hari Ini</h5>
+                    <h3 class="text-success">@Model.Count(x => x.TanggalKeluar.Date == DateTime.Today)</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-primary bg-opacity-10">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Bulan Ini</h5>
+                    <h3 class="text-primary">@Model.Count(x => x.TanggalKeluar.Month == DateTime.Now.Month && x.TanggalKeluar.Year == DateTime.Now.Year)</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Search functionality
+            $('#searchBarang').on('keyup', function() {
+                filterTable();
+            });
+            
+            // Date filter
+            $('#filterTanggal').on('change', function() {
+                filterTable();
+            });
+            
+            // Month filter
+            $('#filterBulan').on('change', function() {
+                filterTable();
+            });
+            
+            function filterTable() {
+                const searchTerm = $('#searchBarang').val().toLowerCase();
+                const filterTanggal = $('#filterTanggal').val();
+                const filterBulan = $('#filterBulan').val();
+                
+                $('#tableBarangKeluar tbody tr').each(function() {
+                    const row = $(this);
+                    const namaBarang = row.find('td[data-barang]').attr('data-barang') || '';
+                    const tanggal = row.find('td[data-tanggal]').attr('data-tanggal') || '';
+                    const bulan = row.find('td[data-bulan]').attr('data-bulan') || '';
+                    
+                    let showRow = true;
+                    
+                    // Filter by search term
+                    if (searchTerm && !namaBarang.includes(searchTerm)) {
+                        showRow = false;
+                    }
+                    
+                    // Filter by date
+                    if (filterTanggal && tanggal !== filterTanggal) {
+                        showRow = false;
+                    }
+                    
+                    // Filter by month
+                    if (filterBulan && bulan !== filterBulan) {
+                        showRow = false;
+                    }
+                    
+                    // Show/hide row
+                    if (showRow) {
+                        row.show();
+                    } else {
+                        row.hide();
+                    }
+                });
+                
+                // Update row numbers
+                updateRowNumbers();
+            }
+            
+            function updateRowNumbers() {
+                let no = 1;
+                $('#tableBarangKeluar tbody tr:visible').each(function() {
+                    $(this).find('td:first').text(no++);
+                });
+            }
+        });
+        
+        function resetFilter() {
+            $('#searchBarang').val('');
+            $('#filterTanggal').val('@DateTime.Now.ToString("yyyy-MM-dd")');
+            $('#filterBulan').val('@DateTime.Now.Month');
+            $('#tableBarangKeluar tbody tr').show();
+            
+            // Update row numbers
+            let no = 1;
+            $('#tableBarangKeluar tbody tr').each(function() {
+                $(this).find('td:first').text(no++);
+            });
+        }
+    </script>
+}
